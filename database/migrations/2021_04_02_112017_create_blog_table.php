@@ -18,11 +18,9 @@ class CreateBlogTable extends Migration
             $table->string('title');
             $table->text('text');
             $table->string('image_url');
-            $table->tinyInteger('approved');            
+            $table->tinyInteger('approved')->default(0);            
             $table->foreignId('authorid')->references('id')->on('users');
-            $table->timestamps();
-
-            
+            $table->timestamps();            
         });
     }
 

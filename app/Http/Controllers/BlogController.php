@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['create', 'store', 'edit', 'update']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +21,7 @@ class BlogController extends Controller
     public function index()
     {
         //
-        $blogs = Blog::all();
+        $blogs = Blog::where('approved', 1)->orderby('created_at', 'desc')->get();
         return view('blog.index', ['blogs' => $blogs]);
     }
 
@@ -27,6 +33,7 @@ class BlogController extends Controller
     public function create()
     {
         //
+        return view('blog.create');
     }
 
     /**
@@ -38,6 +45,31 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'title'=> 'required',
+            'text'=>'required',
+            'image'=>'required|image'
+        ]);       
+
+        $blog = new Blog();
+        $blog->title = $request->title;
+        $blog->text = $request->text;
+        $blog->authorid = 2;
+
+        $image = $request->image;	
+		// return var_dump($slika);
+		$image->move('/images', $image->getClientOriginalName());
+		$blog->image_url = '/slike/'. $image->getClientOriginalName();
+        
+        if ($blog->save()){
+               return back()->with('success', 'Text added successfully');
+        } else {
+            return back()->with('error', 'Some error occured.');
+        };
+        
+
+        return var_dump($blog);
+        
     }
 
     /**

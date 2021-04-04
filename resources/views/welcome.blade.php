@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-<p>Velkom</p>
+<p><a href="/blog/create" class="btn btn-outline-primary">Add Blog Article</a></p>
 @stop
