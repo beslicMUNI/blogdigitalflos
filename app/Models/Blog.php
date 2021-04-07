@@ -11,4 +11,8 @@ class Blog extends Model
 
     protected $table ='blog';
     protected $primaryKey = 'id';
+
+    public function author(){
+        return $this->hasOne(User::class, 'id', 'authorid');
+    }
 }

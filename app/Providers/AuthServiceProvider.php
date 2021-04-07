@@ -16,6 +16,15 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 
+    // action and roles 
+    public static $permissions = [        
+        'create-blog' => [1],
+        'store-blog' => [1],
+        'edit-blog' => [1],
+        'approve-blog' => [2],
+        'destroy-blog' => [2],
+    ];
+
     /**
      * Register any authentication / authorization services.
      *
@@ -26,5 +35,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         //
+
+        
     }
 }

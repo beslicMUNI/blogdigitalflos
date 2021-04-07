@@ -2,7 +2,7 @@ html,
 body,
 main {
     background-color: #f8f9fa;
-    height: 100%;
+    min-height: 768px;
 }
 
 nav {
@@ -17,4 +17,15 @@ nav {
 
 .content-wrapper {
     height: 100%;
+}
+
+.content-wrapper img {
+    max-width: 100%;
+    height: auto;
+}
+
+#blog-image-edit {
+    height: 100px;
+    width: auto;
+    margin-bottom: 20px;
 }

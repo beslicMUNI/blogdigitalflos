@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
@@ -54,21 +55,20 @@ class BlogController extends Controller
         $blog = new Blog();
         $blog->title = $request->title;
         $blog->text = $request->text;
-        $blog->authorid = 2;
+        $blog->authorid = Auth::id();
 
-        $image = $request->image;	
-		// return var_dump($slika);
-		$image->move('/images', $image->getClientOriginalName());
-		$blog->image_url = '/slike/'. $image->getClientOriginalName();
+        $imageFile = $request->file('image');
+        $imagePath = '/images/'.$imageFile->getClientOriginalName();
+        $imageFile->move(public_path().$imagePath, $imageFile->getClientOriginalName());
+        
+        $blog->image_url = $imagePath;
+		
         
         if ($blog->save()){
                return back()->with('success', 'Text added successfully');
         } else {
             return back()->with('error', 'Some error occured.');
-        };
-        
-
-        return var_dump($blog);
+        }
         
     }
 
@@ -81,6 +81,8 @@ class BlogController extends Controller
     public function show($id)
     {
         //
+        $blog = Blog::where('id',$id)->firstOrFail();
+        return view('blog.show', ['blog'=> $blog]);
     }
 
     /**
@@ -92,6 +94,8 @@ class BlogController extends Controller
     public function edit($id)
     {
         //
+        $blog = Blog::find($id);
+        return view('blog.edit', ['blog'=>$blog]);
     }
 
     /**
@@ -104,6 +108,24 @@ class BlogController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $blog = Blog::find($id);
+
+        $blog->title = $request->title;
+        $blog->text = $request->text;
+
+        if($request->has('image')){
+            $imageFile = $request->file('image');
+            $imagePath = '/images/'.$imageFile->getClientOriginalName();
+            $imageFile->move(public_path().$imagePath, $imageFile->getClientOriginalName());
+            
+            $blog->image_url = $imagePath;
+        }
+
+        if ($blog->save()){
+               return back()->with('success', 'Text updated successfully');
+        } else {
+            return back()->with('error', 'Some error occured.');
+        }
     }
 
     /**
