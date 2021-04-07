@@ -12,7 +12,10 @@ class BlogController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->only(['create', 'store', 'edit', 'update']);
+        
     }
+
+
 
     /**
      * Display a listing of the resource.
@@ -59,7 +62,7 @@ class BlogController extends Controller
 
         $imageFile = $request->file('image');
         $imagePath = '/images/'.$imageFile->getClientOriginalName();
-        $imageFile->move(public_path().$imagePath, $imageFile->getClientOriginalName());
+        $imageFile->move(public_path().'/images/', $imageFile->getClientOriginalName());
         
         $blog->image_url = $imagePath;
 		
@@ -94,8 +97,12 @@ class BlogController extends Controller
     public function edit($id)
     {
         //
-        $blog = Blog::find($id);
-        return view('blog.edit', ['blog'=>$blog]);
+        if(Auth::user()->id == $id){
+            $blog = Blog::find($id);
+            return view('blog.edit', ['blog'=>$blog]);
+        } else {
+            return 'You do not have permission do this';
+        }
     }
 
     /**
@@ -116,7 +123,7 @@ class BlogController extends Controller
         if($request->has('image')){
             $imageFile = $request->file('image');
             $imagePath = '/images/'.$imageFile->getClientOriginalName();
-            $imageFile->move(public_path().$imagePath, $imageFile->getClientOriginalName());
+            $imageFile->move(public_path().'/images/', $imageFile->getClientOriginalName());
             
             $blog->image_url = $imagePath;
         }
@@ -136,6 +143,25 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $blog = Blog::find($id);
+        if(Auth::user()->id == $blog->author->id){
+            $blog->delete();
+            return redirect()->back();
+        } else {
+            return abort(403);
+        }
+        
+        
+    }
+
+    public function approve($id){
+        
+            $blog = Blog::find($id);
+            $blog->approved = 1;
+            $blog->save();
+
+            return redirect()->back();
+
+        
     }
 }

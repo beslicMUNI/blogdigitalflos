@@ -10,13 +10,20 @@ nav {
 }
 
 .container {
-    width: 690px;
+
     background-color: #fff;
     height: 100%;
 }
 
+@media screen and (min-width: 990px) {
+    .container {
+        width: 690px;
+    }
+}
+
 .content-wrapper {
     height: 100%;
+    min-height: 768px;
 }
 
 .content-wrapper img {
@@ -28,4 +35,59 @@ nav {
     height: 100px;
     width: auto;
     margin-bottom: 20px;
+}
+
+.admin-blogs-table-wrapper {
+    margin-bottom: 30px;
+}
+
+.blog-index-wrapper {
+    margin-top: 20px;
+    display: inline-grid;
+    grid-template-columns: 50% 50%;
+}
+
+@media screen and (max-width: 768px) {
+    .blog-index-wrapper {
+        display: inline-grid;
+        grid-template-columns: 100%
+    }
+}
+
+.blog-single {
+    margin: 10px;
+    position: relative;
+
+    border: 1px solid rgb(187, 186, 186);
+    border-radius: 5px;
+}
+
+.blog-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100px;
+    padding-bottom: 10px;
+    word-break: break-all;
+}
+
+.blog-info {
+    padding: 10px;
+    height: 140px;
+}
+
+.blog-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.blog-buttons {
+    position: absolute;
+    bottom: 10px;
+    display: inline-flex;
+}
+
+.blog-buttons a {
+    margin-right: 5px;
 }

@@ -12,7 +12,10 @@ class Blog extends Model
     protected $table ='blog';
     protected $primaryKey = 'id';
 
+    protected $fillable = ['title', 'image_url', 'text'];
+
     public function author(){
         return $this->hasOne(User::class, 'id', 'authorid');
     }
+    
 }
